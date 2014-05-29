@@ -1,0 +1,139 @@
+#!/bin/bash
+#   aSquidguard - Full Squidguard directory 
+#
+#   Copyright (C) Edwin Enrique Flores Bautista <loquitoslack@gmail.com>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2, or (at your option)
+#   any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software Foundation,
+#   Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+#   RELEASE: 20120518
+
+#### Define Variables y Directorios 
+domain=${1:?'No se admiten dominios nulos'}
+categorie=${2:-"NULL"}
+Draiz=/var/lib/squidguard/db 
+Dtmp=/tmp
+vinicial=0 	#Define primera ejecución del script
+#################################
+
+function _menu_aSquidguard(){
+ _title_aSquidguard
+ if [ $vinicial -eq 0 ]; then
+ _muestra_aSquidguard
+ else
+ _read_aSquidguard 
+ _muestra_aSquidguard
+ fi
+_option_aSquidguard
+}
+
+function _title_aSquidguard(){
+clear 0
+echo '.____    .__              '
+echo '|    |   |__| ____  __ _____  ___'
+echo '|    |   |  |/    \|  |  \  \/  /'
+echo '|    |___|  |   |  \  |  />    < '
+echo '|_______ \__|___|  /____//__/\_ \'
+echo '        \/       \/            \/'
+sleep 0.3 
+}
+
+function _muestra_aSquidguard(){
+ echo -ne "ingrese el dominio-->"
+ read domain
+ echo -ne "\n"
+ echo -ne "Ingrese la categoria"
+ read categorie
+ echo -ne "\n"
+ sleep 0.2
+ clear 0
+}
+
+function _muestra_aSquidguard(){
+ echo "Domain: [$domain] Categoria:[$categorie]"
+}
+
+function _option_aSquidguard(){ 
+echo "a) Buscar dominio" 
+echo "b) Depurar dominio "
+echo "c) Insertar dominio"
+echo "d) Help Me!!!!!!"
+echo "e) exit"
+echo -ne "escoje tu opcion --> "
+read option 
+case "$option" in
+    "a")
+     _busqueda_aSquidguard $domain 
+     exit 0
+    ;;
+    "b")
+     _busqueda_aSquidguard $domain 
+     _depura_aSquidguard
+    ;;
+    "c")
+     _busqueda_aSquidguard $domain 
+     _inserta_categorie $domain $categorie
+    ;;
+    *)
+esac
+
+} 
+
+function _busqueda_aSquidguard(){
+ domain=$1
+ grep -n -R -E "^(?|\+)$domain$" $Draiz > $Dtmp/domainquery.txt
+ categorie=`cat $Dtmp/domainquery.txt | awk -F : '{print $1}' | awk -F "/" '{print $6}'`
+ sed -e "s/$/:\$categorie/" $Dtmp/domainquery.txt
+ cat $Dtmp/domainquery.txt
+}
+
+function _comprueba_dir(){
+categorie=$1
+if [ -d $Draiz/$categorie ]; then
+   band=
+else
+   echo "Directorio $categorie ubicado en $Draiz no Existe"
+   exit 0
+fi
+}
+
+function _inserta_categorie (){
+while read linea; do
+dgraiz=`echo $linea | awk -F : '{print $1}'`
+dignum=`echo $linea | awk -F : '{print $2}'`
+digdom=`echo $linea | awk -F : '{print $3}'`
+digcat=`echo $linea | awk -F : '{print $4}'`
+ if [ -s $Dtmp/domainquery.txt ]; then
+	echo "El dominio ya existe en la categoria"
+        exit 0 
+ else 
+	_comprueba_dir $categorie
+ 	echo "$domain" >> $Draiz/$categorie
+ fi
+done<$Dtmp/domainquery.txt
+}
+
+function _depura_aSquidguard(){
+while read linea; do
+dgraiz=`echo $linea | awk -F : '{print $1}'`
+dignum=`echo $linea | awk -F : '{print $2}'`
+digdom=`echo $linea | awk -F : '{print $3}'`
+digcat=`echo $linea | awk -F : '{print $4}'`
+sed -i "$dignum""d" $dgraiz 
+done<$Dtmp/domainquery.txt 
+}
+
+#_depura_aSquidguard
+_menu_aSquidguard
+
