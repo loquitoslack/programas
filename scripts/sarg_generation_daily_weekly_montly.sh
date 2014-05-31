@@ -60,7 +60,13 @@ echo -e '
       </th>\n      
     </tr>\n      
     <tr>\n        
-      <td align=center bgcolor=beige><font face=Arial size=3><a href=Daily>Daily</a></font></td>\n      </tr>\n      <tr>\n        <td align=center bgcolor=beige><font face=Arial size=3><a href=Weekly>Weekly</a></font></td>\n      </tr>\n      <tr>\n        <td align=center bgcolor=beige><font face=Arial size=3><a href=Monthly>Monthly</a></font></td>\n      </tr>\n    </table>\n  </div>\n  </body>\n  </html>'
+      <td align=center bgcolor=beige><font face=Arial size=3>
+        <a href=Daily>Daily</a>
+        </font>
+      </td>\n      
+    </tr>\n      
+    <tr>\n        
+     <td align=center bgcolor=beige><font face=Arial size=3><a href=Weekly>Weekly</a></font></td>\n      </tr>\n      <tr>\n        <td align=center bgcolor=beige><font face=Arial size=3><a href=Monthly>Monthly</a></font></td>\n      </tr>\n    </table>\n  </div>\n  </body>\n  </html>'
 /usr/bin/sarg -f /etc/sarg/sarg.conf -d week-1 -o /var/lib/sarg/Weekly
 exclude_from_log
 grep -v 'SARG: End'
