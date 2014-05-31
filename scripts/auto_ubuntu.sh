@@ -22,6 +22,46 @@
 # Fecha: 27-05-2012
 # Observaciones: Automatización Instalación Ubuntu 10.04 
 
+function _title(){
+clear 0
+echo '.____    .__              '
+echo '|    |   |__| ____  __ _____  ___'
+echo '|    |   |  |/    \|  |  \  \/  /'
+echo '|    |___|  |   |  \  |  />    < '
+echo '|_______ \__|___|  /____//__/\_ \'
+echo '        \/       \/            \/'
+sleep 0.3 
+}
+
+function _menu(){
+echo "a) Update/Upgrade/Configurar Ubuntu" 
+echo "b) Instalar Printer TMU950 "
+echo "c) Intalar Printer TMU110"
+echo "d) Help Me!!!!!!"
+echo "e) exit"
+echo -ne "escoje tu opcion --> "
+read option 
+case "$option" in
+    "a")
+ 	instalar_ubuntu
+    ;;
+    "b")
+ 	instalar_driver_TMU950
+    ;;
+    "c")
+	instalar_driver_TMU110 
+    ;;
+    "d")
+	#### Falta
+	;;
+	"e")
+       exit 0; 
+	;; 
+    *)
+esac
+}
+
+
 actualiza_source() {
 cp -rfv /etc/apt/sources.list /etc/apt/sources.list.old
 cat > /etc/apt/sources.list << "EOF"
@@ -39,9 +79,8 @@ apt-get update && apt-get upgrade -y --force-yes
 genera_software(){
 cat > /tmp/software.txt << "EOF"  
 non-free-codecs gstreamer0.10-ffmpeg libdvdread4 vlc
-rar unace p7zip-full p7zip-rar sharutils mpack lha arj  
-skype 
-htop ubuntu-tweak bisigi-themes
+rar unace p7zip-full p7zip-rar lha arj  
+htop
 EOF
 }
 
@@ -72,10 +111,14 @@ while [ $i -lt ${#paquete[@]} ]; do
 	done
 }
 
-automatizacion_ubuntu(){
+instalar_ubuntu(){
 actualiza_source
 actualiza_sistema
 instala_paquetes
 remueve_paquetes
 }
-automatizacion_ubuntu
+
+instalar_driver_TMU950(){
+echo
+}
+
