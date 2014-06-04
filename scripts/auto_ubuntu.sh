@@ -119,6 +119,8 @@ remueve_paquetes
 }
 
 instalar_driver_TMU950(){
-echo
+apt-get install php5 php5-gd php5-cli apache2 -y --force-yes
+wget -c "http://ubuntu.ich.edu.pe/public/recaudacion.tar.gz"
+tar -zxvf recaudacion.tar.gz -C /var/www/
 }
 

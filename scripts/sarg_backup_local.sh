@@ -1,6 +1,6 @@
 #!/bin/bash
 ARCHIVEROOT=/backup
-SARGROOT=/var/www/sarg-reports
+SARGROOT=/var/www/squid-reports
 SARGTIME=sarg.`date +%d%b%Y`
 if [ ! -d $ARCHIVEROOT ]; then 
  mkdir $ARCHIVEROOT 
