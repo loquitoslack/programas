@@ -38,7 +38,7 @@ cd /usr/src/linux
 
 
 ###########################################################
-apt-get install -y --force-yes fakeroot libncurses5-dev kernel-package dpkg-dev file gcc g++ libc6-dev make patch perl autoconf automake dh-make debhelper devscripts fakeroot gnupg gpc xutils lintian quilt libtool libselinux1-dev linuxdoc-tools zlib1g-dev 
+apt-get install -y --force-yes fakeroot libncurses5-dev kernel-package dpkg-dev file gcc g++ libc6-dev make patch perl autoconf automake dh-make debhelper devscripts fakeroot gnupg gpc xutils lintian quilt libtool libselinux1-dev linuxdoc-tools zlib1g-dev libnfnetlink-dev
 cd /usr/src
 wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.32.tar.bz2
 tar -xvjpf linux-2.6.32.tar.bz2
@@ -62,3 +62,9 @@ fakeroot make-kpkg --initrd --append-to-version=-custom kernel_image kernel_head
 cd /usr/src
 dpkg -i linux-image-2.6.32-custom_2.6.32-custom-10.00.Custom_amd64.deb
 dpkg -i linux-headers-2.6.32-custom_2.6.32-custom-10.00.Custom_amd64.deb
+
+cp -rfv /usr/src/linux-2.6.32/include/linux/netfilter/xt_layer7.h /usr/include/linux/netfilter/.
+
+deb-src http://ftp.us.debian.org/debian squeeze main contrib non-free
+
+cp -rfv /usr/src/netfilter-layer7-v2.22/for_older_iptables/iptables-1.4.1.1-for-kernel-2.6.20forward/* /usr/src/iptables-1.4.8/extensions/
