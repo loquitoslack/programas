@@ -1,0 +1,11 @@
+#!/bin/bash
+apt-get install bind9 bind9-doc dnsutils
+/etc/init.d/bind9 stop
+mkdir -p /var/chroot/bind9/{etc,dev,var/cache/bind,var/run/bind/run}
+chown -R bind:bind /var/chroot/bind9/var/*
+mknod /var/chroot/bind9/dev/null c 1 3
+mknod /var/chroot/bind9/dev/random c 1 8
+chmod 666 /var/chroot/bind9/dev/{null,random}
+mv -v /etc/bind /var/chroot/bind9/etc
+ln -s /var/chroot/bind9/etc/bind /etc/bind
+
