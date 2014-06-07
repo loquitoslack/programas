@@ -35,3 +35,30 @@ function _parcharkernel_layer7(){
 cd /usr/src/linux
 
 }
+
+
+###########################################################
+apt-get install -y --force-yes fakeroot libncurses5-dev kernel-package dpkg-dev file gcc g++ libc6-dev make patch perl autoconf automake dh-make debhelper devscripts fakeroot gnupg gpc xutils lintian quilt libtool libselinux1-dev linuxdoc-tools zlib1g-dev 
+cd /usr/src
+wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.32.tar.bz2
+tar -xvjpf linux-2.6.32.tar.bz2
+ln -sf linux-2.6.32 linux 
+wget http://download.sourceforge.net/l7-filter/netfilter-layer7-v2.22.tar.gz
+tar -xvzpf netfilter-layer7-v2.22.tar.gz 
+cd netfilter-layer7-v2.22
+cp kernel-2.6.25-2.6.28-layer7-2.22.patch /usr/src/linux/
+cd /usr/src/linux
+patch -p1 < kernel-2.6.25-2.6.28-layer7-2.22.patch 
+cp /boot/config-2.6.32-5-amd64 /usr/src/linux/.config
+make menuconfig 
+
+Networking Support > Networking Options > Network packet filtering framework (Netfilter) > Core Netfilter Configuration >
+<M> "layer7" match support
+[*]   Layer 7 debugging output
+
+make-kpkg clean
+fakeroot make-kpkg --initrd --append-to-version=-custom kernel_image kernel_headers
+
+cd /usr/src
+dpkg -i linux-image-2.6.32-custom_2.6.32-custom-10.00.Custom_amd64.deb
+dpkg -i linux-headers-2.6.32-custom_2.6.32-custom-10.00.Custom_amd64.deb
