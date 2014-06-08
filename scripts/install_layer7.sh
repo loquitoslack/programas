@@ -68,3 +68,42 @@ cp -rfv /usr/src/linux-2.6.32/include/linux/netfilter/xt_layer7.h /usr/include/l
 deb-src http://ftp.us.debian.org/debian squeeze main contrib non-free
 
 cp -rfv /usr/src/netfilter-layer7-v2.22/for_older_iptables/iptables-1.4.1.1-for-kernel-2.6.20forward/* /usr/src/iptables-1.4.8/extensions/
+
+#############################################################################################################################################
+vi /etc/apt/sources.list
+deb http://ftp.us.debian.org/debian squeeze main contrib non-free
+apt-get update
+apt-get install libncurses5-dev kernel-package zlib1g-dev
+apt-get remove --purge iptables
+cd /usr/src
+wget http://www.kernel.org/pub/linux/kernel/v2.6/linux-2.6.28.tar.bz2
+wget http://www.netfilter.org/projects/iptables/files/iptables-1.4.2.tar.bz2
+wget http://downloads.sourceforge.net/l7-filter/netfilter-layer7-v2.21.tar.gz
+wget http://downloads.sourceforge.net/l7-filter/l7-protocols-2008-04-23.tar.gz
+tar jxvf linux-2.6.28.tar.bz2
+tar jxvf iptables-1.4.2.tar.bz2
+tar zxvf netfilter-layer7-v2.21.tar.gz
+tar zxvf l7-protocols-2008-04-23.tar.gz
+ln -s /usr/src/linux-2.6.28 /usr/src/linux 
+#### Compilando el kernel
+make menuconfig 
+# Entre no diretório Networking -> Networking Options -> Network Packet Filtering Framework (netfilter) -> Core Netfilter Configuration 
+#Marque os módulos (M) layer7 match support e (M) string match support 
+#(M) layer7 match support #MARCAR COMO MÓDULO
+#(M) string match support #MARCAR COMO MÓDULO 
+fakeroot make-kpkg --initrd --append-to-version=-custom kernel_image kernel_headers
+cd /usr/src
+dpkg -i *.deb 
+vim /etc/default/grub
+udapte-grub
+cd /usr/src/iptables-1.4.2
+cp ../netfilter-layer7-v2.21/iptables-1.4.1.1-for-kernel-2.6.20forward/* extensions/
+cp -rfv ../netfilter-layer7-v2.21/iptables-1.4.1.1-for-kernel-2.6.20forward/* extensions/
+./configure --with-ksource=/usr/src/linux
+make install
+cd /usr/src/l7-protocols-2008-04-23
+make install
+reboot
+modprobe ipt_layer7
+iptables -m layer7
+iptables -m layer7 --help
