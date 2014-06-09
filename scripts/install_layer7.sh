@@ -69,7 +69,6 @@ deb-src http://ftp.us.debian.org/debian squeeze main contrib non-free
 
 cp -rfv /usr/src/netfilter-layer7-v2.22/for_older_iptables/iptables-1.4.1.1-for-kernel-2.6.20forward/* /usr/src/iptables-1.4.8/extensions/
 
-<<<<<<< HEAD
 cd /usr/src/iptables-1.4.8
 dpkg-buildpackage -rfakeroot 
 
@@ -82,7 +81,7 @@ cd /etc/l7-protocols
 wget -c http://l7-filter.sourceforge.net/layer7-protocols/protocols/ssh.pat 
 
 modprobe xt_layer7 
-=======
+
 #############################################################################################################################################
 vi /etc/apt/sources.list
 deb http://ftp.us.debian.org/debian squeeze main contrib non-free
