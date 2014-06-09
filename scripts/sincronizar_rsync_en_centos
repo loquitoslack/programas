@@ -1,0 +1,52 @@
+sincronizar rsync en centos 
+###########################
+root@localhost# crontab -e 
+
+##### --exclude: excluye archivos 
+##### --delete: elimina archivos 
+##### --bwlimit=128 --> en KB 
+30 23 * * * rsync -aqzH --delete msync.centos.org::CentOS/6.5/ --exclude 'isos' /var/spool/apt-mirror/mirror/centos/6.5/.
+
+##############################################
+#!/bin/bash
+wget -c "http://www.squidguard.org/Downloads/Devel/squidGuard-1.5-beta.tar.gz"
+tar -zxvf squidGuard-1.5-beta.tar.gz
+./configure --sysconfdir=/etc/squidguard/ --with-db=/var/lib/squidguard --with-sg-logdir=/var/log/squidguard --with-sg-dbhome=/var/lib/squidguard/db/ --bindir=/usr/bin
+
+Fine tuning of the installation directories:
+  --bindir=DIR            user executables [EPREFIX/bin]
+  --sbindir=DIR           system admin executables [EPREFIX/sbin]
+  --libexecdir=DIR        program executables [EPREFIX/libexec]
+  --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
+  --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
+  --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --libdir=DIR            object code libraries [EPREFIX/lib]
+  --includedir=DIR        C header files [PREFIX/include]
+  --oldincludedir=DIR     C header files for non-gcc [/usr/include]
+  --datarootdir=DIR       read-only arch.-independent data root [PREFIX/share]
+  --datadir=DIR           read-only architecture-independent data [DATAROOTDIR]
+  --infodir=DIR           info documentation [DATAROOTDIR/info]
+  --localedir=DIR         locale-dependent data [DATAROOTDIR/locale]
+  --mandir=DIR            man documentation [DATAROOTDIR/man]
+  --docdir=DIR            documentation root [DATAROOTDIR/doc/PACKAGE]
+  --htmldir=DIR           html documentation [DOCDIR]
+  --dvidir=DIR            dvi documentation [DOCDIR]
+  --pdfdir=DIR            pdf documentation [DOCDIR]
+  --psdir=DIR             ps documentation [DOCDIR]
+
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-db=DIR           location of the Berkley DB distribution
+  --with-db-lib=DIR       location of the Berkley DB library
+  --with-db-inc=DIR       location of the Berkley DB include files
+  --with-sg-config=FILE   location of squidGuard config file
+  --with-sg-logdir=DIR    location of squidGuard log file
+  --with-sg-dbhome=DIR    location of squidGuard db dirs
+  --with-nolog=ARG        supress logging except for start and stop messages (default: ARG=no)
+  --with-syslog=ARG       send log messages to syslog for logging (default: ARG=no)
+  --with-syslog-facility=FAC   use FAC as syslog facility (default: FAC=LOCAL4)
+  --with-squiduser=USER   do set squid user to USER (default: squid)
+  --with-ldap             use ldap for authentication (default: no ldap)
+  --with-ldap-lib=DIR     location of the LDAP library
+  --with-ldap-inc=DIR     location of the LDAP include files

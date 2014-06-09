@@ -82,9 +82,13 @@ wget -c http://l7-filter.sourceforge.net/layer7-protocols/protocols/ssh.pat
 
 modprobe xt_layer7 
 
-#############################################################################################################################################
-vi /etc/apt/sources.list
+############################################################################################
+####### http://http://www.vivaolinux.com.br/dica/Instacao-do-layer7-no-Debian-Lenny ########
+############################################################################################
+
+vim /etc/apt/sources.list
 deb http://ftp.us.debian.org/debian squeeze main contrib non-free
+deb-src http://ftp.us.debian.org/debian squeeze main contrib non-free
 apt-get update
 apt-get install libncurses5-dev kernel-package zlib1g-dev
 apt-get remove --purge iptables
@@ -98,6 +102,8 @@ tar jxvf iptables-1.4.2.tar.bz2
 tar zxvf netfilter-layer7-v2.21.tar.gz
 tar zxvf l7-protocols-2008-04-23.tar.gz
 ln -s /usr/src/linux-2.6.28 /usr/src/linux 
+cd /usr/src/linux
+patch -p1 < ../netfilter-layer7-v2.21/kernel-2.6.25-2.6.28-layer7-2.21.patch 
 #### Compilando el kernel
 make menuconfig 
 # Entre no diretório Networking -> Networking Options -> Network Packet Filtering Framework (netfilter) -> Core Netfilter Configuration 
@@ -111,13 +117,14 @@ vim /etc/default/grub
 udapte-grub
 cd /usr/src/iptables-1.4.2
 cp ../netfilter-layer7-v2.21/iptables-1.4.1.1-for-kernel-2.6.20forward/* extensions/
-cp -rfv ../netfilter-layer7-v2.21/iptables-1.4.1.1-for-kernel-2.6.20forward/* extensions/
 ./configure --with-ksource=/usr/src/linux
+make
 make install
 cd /usr/src/l7-protocols-2008-04-23
 make install
 reboot
 modprobe ipt_layer7
-iptables -m layer7
+vim /etc/modules
+ipt_layer7
 iptables -m layer7 --help
->>>>>>> 43991b7a66f7f9f2481a9a0fa805901148c7febe
+
