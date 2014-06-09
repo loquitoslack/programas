@@ -68,3 +68,16 @@ cp -rfv /usr/src/linux-2.6.32/include/linux/netfilter/xt_layer7.h /usr/include/l
 deb-src http://ftp.us.debian.org/debian squeeze main contrib non-free
 
 cp -rfv /usr/src/netfilter-layer7-v2.22/for_older_iptables/iptables-1.4.1.1-for-kernel-2.6.20forward/* /usr/src/iptables-1.4.8/extensions/
+
+cd /usr/src/iptables-1.4.8
+dpkg-buildpackage -rfakeroot 
+
+dpkg -i iptables_1.4.8-3_i386.deb
+
+mkdir /etc/l7-protocols/ 
+
+cd /etc/l7-protocols
+
+wget -c http://l7-filter.sourceforge.net/layer7-protocols/protocols/ssh.pat 
+
+modprobe xt_layer7 
