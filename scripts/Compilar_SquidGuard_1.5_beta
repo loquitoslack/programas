@@ -1,11 +1,17 @@
 Compilar SquidGuard 1.5 beta
 ##############################################
+Añadir en sources.list 
+deb-src http://ftp.us.debian.org/debian squeeze main contrib non-free
+
+Ejecutar los siguientes comandos:
+apt-get update 
+apt-get buil-dep squidguard
+
 wget -c "http://www.shallalist.de/Downloads/shallalist.tar.gz"
 
-#!/bin/bash
 wget -c "http://www.squidguard.org/Downloads/Devel/squidGuard-1.5-beta.tar.gz"
 tar -zxvf squidGuard-1.5-beta.tar.gz
-./configure --sysconfdir=/etc/squidguard/ --with-db=/var/lib/squidguard --with-sg-logdir=/var/log/squidguard --with-sg-dbhome=/var/lib/squidguard/db/ --bindir=/usr/bin
+./configure --sysconfdir=/etc/squidguard/ --with-db=/var/lib/squidguard/ --with-sg-logdir=/var/log/squidguard/ --with-sg-dbhome=/var/lib/squidguard/db/ --bindir=/usr/bin/ --with-squiduser=proxy --with-sg-config=/etc/squidguard/ 
 
 Fine tuning of the installation directories:
   --bindir=DIR            user executables [EPREFIX/bin]
