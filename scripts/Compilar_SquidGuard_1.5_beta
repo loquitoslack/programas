@@ -11,6 +11,9 @@ wget -c "http://www.shallalist.de/Downloads/shallalist.tar.gz"
 
 wget -c "http://www.squidguard.org/Downloads/Devel/squidGuard-1.5-beta.tar.gz"
 tar -zxvf squidGuard-1.5-beta.tar.gz
+mkdir /etc/squidguard
+chmod a+x /etc/squidguard 
+chown -R proxy.proxy /var/lib/squidguard/db/
 ./configure --sysconfdir=/etc/squidguard/ --with-db=/var/lib/squidguard/ --with-sg-logdir=/var/log/squidguard/ --with-sg-dbhome=/var/lib/squidguard/db/ --bindir=/usr/bin/ --with-squiduser=proxy --with-sg-config=/etc/squidguard/ 
 
 Fine tuning of the installation directories:
