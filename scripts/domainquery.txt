@@ -1,2 +1,0 @@
-/var/lib/squidguard/db/porn/domains:217:porn.com
-/var/lib/squidguard/db/porn/domains.diff:217:+porn.com
