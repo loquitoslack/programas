@@ -23,4 +23,5 @@ cat debian/control
 
 apt-get build-dep squidguard 
 
+dpkg-buildpackage -us -uc 
 
