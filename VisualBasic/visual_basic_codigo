@@ -1,0 +1,31 @@
+visual basic codigo
+Modulo2
+-------
+' Crea la clase Registrar Productos
+Sub RegistrarProductos()
+' Declara variables
+    Dim fila As Integer
+    Dim final As Integer
+    Dim Datos As Variant
+    Dim Registro As Integer
+    
+    Datos = Hoja1.Cells(1, 4)
+    
+    ' Inserta datos en una fila hasta llegar al numero 1000 de la misma
+    For fila = 1 To 1000
+        If Hoja1.Cells(fila, 1) = "" Then
+            final = fila
+            Exit For
+            End If
+    Next
+        Hoja1.Cells(final, 1) = Datos
+        
+    ' Evita registros Repetidos cuando se insertan variables
+    For Registro = 1 To final
+        If Hoja1.Cells(Registro, 1) = Datos Then
+            ' Si el registro existe devuelve mensaje
+            MsgBox "Registro ya existe"
+            Exit Sub
+        End If
+    Next
+End Sub
